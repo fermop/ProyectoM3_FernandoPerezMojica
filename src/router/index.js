@@ -1,7 +1,7 @@
 const routes = {
-  '/home': () => '<main><h2>Inicio</h2><p>Bienvenido al chat de Shinobis.</p></main>',
-  '/chat': () => '<main><h2>Chat</h2><p>Área de conversación.</p></main>',
-  '/about': () => '<main><h2>Acerca de</h2><p>Información del proyecto.</p></main>',
+  '/home': () => '<main><h2>Inicio</h2><p>Bienvenido al chat de Shinobis.</p><nav><a href="/chat" data-link>Ir al Chat</a> | <a href="/about" data-link>Acerca de</a></nav></main>',
+  '/chat': () => '<main><h2>Chat</h2><p>Área de conversación.</p><nav><a href="/home" data-link>Volver al Inicio</a></nav></main>',
+  '/about': () => '<main><h2>Acerca de</h2><p>Información del proyecto.</p><nav><a href="/home" data-link>Volver al Inicio</a></nav></main>',
   '/404': () => '<main><h2>404 - Página no encontrada</h2><a href="/home" data-link>Volver al inicio</a></main>'
 }
 
@@ -23,9 +23,11 @@ export const initRouter = () => {
   })
 
   document.body.addEventListener('click', e => {
-    if (e.target.matches('[data-link]')) {
+    const target = e.target.closest('[data-link]')
+    
+    if (target) {
       e.preventDefault()
-      navigateTo(e.target.getAttribute('href'))
+      navigateTo(target.getAttribute('href'))
     }
   })
 
