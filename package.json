@@ -4,7 +4,7 @@
   "description": "SPA responsive para chat con IA usando personajes de Naruto",
   "main": "index.js",
   "scripts": {
-    "start": "npx serve .",
+    "start": "npx serve -s .",
     "test": "vitest run",
     "test:watch": "vitest"
   },
