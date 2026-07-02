@@ -1,0 +1,32 @@
+{
+  "name": "proyectom3_fernandoperezmojica",
+  "version": "1.0.0",
+  "description": "SPA responsive para chat con IA usando personajes de Naruto",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx serve .",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fermop/ProyectoM3_FernandoPerezMojica.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
+  "bugs": {
+    "url": "https://github.com/fermop/ProyectoM3_FernandoPerezMojica/issues"
+  },
+  "homepage": "https://github.com/fermop/ProyectoM3_FernandoPerezMojica#readme",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.9"
+  }
+}
