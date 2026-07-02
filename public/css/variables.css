@@ -1,0 +1,24 @@
+:root {
+  --bg-color: #f4f4f9;
+  --text-color: #1a1a1a;
+  --primary-color: #f77f00;
+  --secondary-color: #003049;
+  --accent-green: #38b000;
+  --accent-gray: #6c757d;
+  --surface-color: #ffffff;
+  --border-color: #e0e0e0;
+  
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 2rem;
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #f4f4f9;
+  --primary-color: #f77f00;
+  --secondary-color: #8fb8ed;
+  --surface-color: #1e1e1e;
+  --border-color: #333333;
+}
