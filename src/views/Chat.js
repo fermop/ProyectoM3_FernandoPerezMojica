@@ -1,4 +1,5 @@
 import { getMessages, addMessage, getState, setState } from '#/store/chatStore.js'
+import { sendMessageToAI } from '#/services/gemini.js'
 
 const characterNames = {
   naruto: 'Naruto Uzumaki',
@@ -108,7 +109,7 @@ export const initChat = () => {
   renderMessages()
 
   if (chatForm) {
-    chatForm.addEventListener('submit', (e) => {
+    chatForm.addEventListener('submit', async (e) => {
       e.preventDefault()
       
       if (getState().status === 'loading') return 
@@ -116,24 +117,30 @@ export const initChat = () => {
       const text = messageInput.value.trim()
       if (!text) return
 
+      const currentHistory = [...getMessages(currentChar)]
+
       addMessage(currentChar, text, 'user')
       setState({ status: 'loading', error: null })
 
       messageInput.value = ''
       messageInput.disabled = true
       submitBtn.disabled = true
-
       renderMessages()
 
-      setTimeout(() => {
-        addMessage(currentChar, `(Mock) Entendido, shinobi. Recibí: "${text}"`, 'ai')
+      try {
+        const reply = await sendMessageToAI(currentChar, text, currentHistory)
+        addMessage(currentChar, reply, 'ai')
+      } catch (error) {
+        console.error(error)
+        addMessage(currentChar, 'Lo siento, surgió un problema en la red ninja. Intenta de nuevo.', 'system')
+        setState({ error: error.message })
+      } finally {
         setState({ status: 'idle' })
         messageInput.disabled = false
         submitBtn.disabled = false
         messageInput.focus()
-        
         renderMessages()
-      }, 1500)
+      }
     })
   }
 }
