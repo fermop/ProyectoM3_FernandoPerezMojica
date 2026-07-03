@@ -40,6 +40,25 @@ const initThemeToggle = () => {
   })
 }
 
+const initMobileMenu = () => {
+  const mobileBtn = document.getElementById('mobile-menu-btn')
+  const closeBtn = document.getElementById('close-menu-btn')
+  const settings = document.getElementById('header-settings')
+  const overlay = document.getElementById('menu-overlay')
+  
+  if (!mobileBtn || !settings || !overlay) return
+  
+  const toggleMenu = (isOpen) => {
+    settings.classList.toggle('is-open', isOpen)
+    overlay.classList.toggle('is-open', isOpen)
+    document.body.style.overflow = isOpen ? 'hidden' : ''
+  }
+  
+  mobileBtn.addEventListener('click', () => toggleMenu(true))
+  closeBtn.addEventListener('click', () => toggleMenu(false))
+  overlay.addEventListener('click', () => toggleMenu(false))
+}
+
 const renderView = (path) => {
   const app = document.getElementById('app')
   
@@ -52,8 +71,11 @@ const renderView = (path) => {
       ${view()}
     </main>
   `
+
+  document.body.style.overflow = ''
   
   initThemeToggle()
+  initMobileMenu()
   
   if (cleanPath === '/chat') {
     initChat()

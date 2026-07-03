@@ -1,11 +1,16 @@
 /* --- Header --- */
 .app-header {
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.app-header-wrapper {
+  max-width: 75rem;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: var(--spacing-md);
-  background-color: var(--surface-color);
-  border-bottom: 1px solid var(--border-color);
 }
 
 .logo-container {
@@ -15,10 +20,6 @@
 }
 
 .logo-img { width: 40px; height: 40px; }
-.main-nav {
-  display: flex;
-  gap: var(--spacing-md);
-}
 
 .theme-btn {
   background: none;
@@ -33,6 +34,98 @@
 
 .theme-btn:hover {
   color: var(--primary-color);
+}
+
+/* --- Menú Mobile (Sidebar) --- */
+.mobile-menu-btn, .close-menu-btn {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-header-settings {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 15.625rem;
+  height: 100vh;
+  background-color: var(--surface-color);
+  flex-direction: column;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-lg);
+  box-shadow: -4px 0 15px rgba(0, 0, 0, 0.2);
+  transition: right 0.3s ease-in-out;
+  z-index: 100;
+  display: flex;
+}
+
+.app-header-settings.is-open {
+  right: 0;
+}
+
+.main-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.main-nav a {
+  font-size: 1.1rem;
+}
+
+.close-menu-btn {
+  align-self: flex-end;
+  margin-bottom: var(--spacing-sm);
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 90;
+}
+
+.menu-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Desktop/Tablet (>= 540px) */
+@media (min-width: 540px) {
+  .mobile-menu-btn, .close-menu-btn, .menu-overlay {
+    display: none;
+  }
+  
+  .app-header-settings {
+    position: static;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    flex-direction: row;
+    padding: 0;
+    box-shadow: none;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .main-nav {
+    flex-direction: row;
+    gap: var(--spacing-md);
+  }
+  
+  .main-nav a {
+    font-size: 1rem;
+  }
 }
 
 /* --- Cards & Grid (Mobile First) --- */
