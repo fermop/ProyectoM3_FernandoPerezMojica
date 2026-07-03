@@ -76,7 +76,15 @@ const renderView = (path) => {
   
   initThemeToggle()
   initMobileMenu()
-  
+
+  const navLinks = document.querySelectorAll('.main-nav a')
+  navLinks.forEach(link => {
+    link.classList.remove('active')
+    if (link.getAttribute('href') === cleanPath) {
+      link.classList.add('active')
+    }
+  })
+
   if (cleanPath === '/chat') {
     initChat()
   }

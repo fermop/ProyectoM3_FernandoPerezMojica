@@ -75,6 +75,15 @@
 
 .main-nav a {
   font-size: 1.1rem;
+  transition: color 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: .25rem;
+}
+
+.main-nav a.active {
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: 600;
 }
 
 .close-menu-btn {
@@ -120,7 +129,8 @@
 
   .main-nav {
     flex-direction: row;
-    gap: var(--spacing-md);
+    align-items: center;
+    gap: 0;
   }
   
   .main-nav a {
