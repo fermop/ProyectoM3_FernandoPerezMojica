@@ -323,6 +323,100 @@
   }
 }
 
+/* --- About View --- */
+.about-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-lg);
+}
+
+.about-card {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.about-card h3 {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: var(--spacing-sm);
+  font-size: 1.2rem;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  list-style: none;
+}
+
+.tech-tag {
+  background-color: var(--bg-color);
+  border: 1px solid var(--border-color);
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.character-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.character-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.character-item .contact-img {
+  width: 3.5rem;
+  height: 3.5rem;
+  cursor: default;
+}
+
+.character-item .contact-img:hover {
+  border-color: transparent;
+}
+
+.character-info h4 {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  color: var(--text-color);
+}
+
+.character-info p {
+  font-size: 0.85rem;
+  color: var(--accent-gray);
+}
+
+.social-links {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: auto;
+  padding-top: var(--spacing-sm);
+}
+
 /* --- Not Found --- */
 .not-found-view {
   display: flex;
@@ -402,5 +496,26 @@
   .contact-img {
     width: 3.5rem;
     height: 3.5rem;
+  }
+
+  .about-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .full-width-card {
+    grid-column: span 2;
+  }
+  
+  .character-list {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .character-item {
+    flex: 1;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
   }
 }
