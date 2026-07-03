@@ -212,3 +212,49 @@
   background-color: #e2e8f0;
   color: var(--text-color);
 }
+
+/* --- UI States (Disabled) --- */
+.btn-primary:disabled {
+  background-color: var(--accent-gray);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.chat-input-area input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* --- Typing Indicator Animation --- */
+.typing-indicator {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  padding: 0.25rem 0.5rem;
+  height: 1.5rem;
+}
+
+.typing-indicator span {
+  width: .5rem;
+  height: .5rem;
+  background-color: currentColor;
+  border-radius: 50%;
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+.typing-indicator span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% { 
+    transform: scale(0);
+  }
+  40% { 
+    transform: scale(1);
+  }
+}

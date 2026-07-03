@@ -1,4 +1,4 @@
-import { getMessages, addMessage } from '#/store/chatStore.js'
+import { getMessages, addMessage, getState, setState } from '#/store/chatStore.js'
 
 const characterNames = {
   naruto: 'Naruto Uzumaki',
@@ -21,11 +21,11 @@ export const Chat = () => {
         </header>
         
         <div class="chat-messages" id="chat-messages">
-          </div>
+        </div>
         
         <form id="chat-form" class="chat-input-area">
           <input type="text" id="message-input" placeholder="Escribe un mensaje..." autocomplete="off" required />
-          <button type="submit" class="btn-primary">Enviar</button>
+          <button type="submit" id="submit-btn" class="btn-primary">Enviar</button>
         </form>
       </div>
     </section>
@@ -40,6 +40,7 @@ export const initChat = () => {
   const messagesContainer = document.getElementById('chat-messages')
   const chatForm = document.getElementById('chat-form')
   const messageInput = document.getElementById('message-input')
+  const submitBtn = document.getElementById('submit-btn')
   const contactImgs = document.querySelectorAll('.contact-img')
 
   if (chatNameEl) {
@@ -53,6 +54,8 @@ export const initChat = () => {
     }
     
     img.addEventListener('click', () => {
+      if (getState().status === 'loading') return 
+
       const char = img.dataset.char
       if (char !== currentChar) {
         const a = document.createElement('a')
@@ -71,8 +74,9 @@ export const initChat = () => {
 
   const renderMessages = () => {
     const messages = getMessages(currentChar)
+    const { status } = getState()
     
-    if (messages.length === 0) {
+    if (messages.length === 0 && status !== 'loading') {
       messagesContainer.innerHTML = `
         <div class="message system-msg">
           <p>Inicia tu entrenamiento conversacional con ${characterNames[currentChar]}.</p>
@@ -81,12 +85,23 @@ export const initChat = () => {
       return
     }
 
-    messagesContainer.innerHTML = messages.map(msg => `
+    let html = messages.map(msg => `
       <div class="message ${msg.sender === 'user' ? 'user-msg' : 'ai-msg'}">
         <p>${msg.text}</p>
       </div>
     `).join('')
 
+    if (status === 'loading') {
+      html += `
+        <div class="message ai-msg">
+          <div class="typing-indicator">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      `
+    }
+
+    messagesContainer.innerHTML = html
     scrollToBottom()
   }
 
@@ -95,17 +110,30 @@ export const initChat = () => {
   if (chatForm) {
     chatForm.addEventListener('submit', (e) => {
       e.preventDefault()
+      
+      if (getState().status === 'loading') return 
+
       const text = messageInput.value.trim()
       if (!text) return
 
       addMessage(currentChar, text, 'user')
+      setState({ status: 'loading', error: null })
+
       messageInput.value = ''
+      messageInput.disabled = true
+      submitBtn.disabled = true
+
       renderMessages()
 
       setTimeout(() => {
         addMessage(currentChar, `(Mock) Entendido, shinobi. Recibí: "${text}"`, 'ai')
+        setState({ status: 'idle' })
+        messageInput.disabled = false
+        submitBtn.disabled = false
+        messageInput.focus()
+        
         renderMessages()
-      }, 1000)
+      }, 1500)
     })
   }
 }
