@@ -6,7 +6,7 @@ export const Header = () => {
     <header class="app-header">
       <div class="app-header-wrapper">
         <div class="logo-container">
-          <img src="/public/assets/logo.webp" alt="Konoha Logo" class="logo-img" />
+          <img src="/public/assets/logo.png" alt="Konoha Logo" class="logo-img" />
           <h1>Shinobi AI</h1>
         </div>
         
