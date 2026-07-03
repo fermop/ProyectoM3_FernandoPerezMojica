@@ -109,47 +109,12 @@
   pointer-events: auto;
 }
 
-/* Desktop/Tablet (>= 540px) */
-@media (min-width: 540px) {
-  .mobile-menu-btn, .close-menu-btn, .menu-overlay {
-    display: none;
-  }
-  
-  .app-header-settings {
-    position: static;
-    width: auto;
-    height: auto;
-    background-color: transparent;
-    flex-direction: row;
-    padding: 0;
-    box-shadow: none;
-    align-items: center;
-    gap: var(--spacing-md);
-  }
-
-  .main-nav {
-    flex-direction: row;
-    align-items: center;
-    gap: 0;
-  }
-  
-  .main-nav a {
-    font-size: 1rem;
-  }
-}
-
 /* --- Cards & Grid (Mobile First) --- */
 .shinobi-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
   gap: var(--spacing-lg);
   margin-top: var(--spacing-lg);
-}
-
-@media (min-width: 768px) {
-  .shinobi-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
 }
 
 .shinobi-card {
@@ -192,7 +157,7 @@
 /* --- Chat Layout --- */
 .chat-view {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-grow: 1;
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -201,35 +166,20 @@
   height: calc(100vh - 150px);
 }
 
-@media (min-width: 768px) {
-  .chat-view {
-    flex-direction: row;
-  }
-}
-
 /* Chat Sidebar */
 .chat-sidebar {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: var(--spacing-sm);
   background-color: var(--bg-color);
-  border-bottom: 1px solid var(--border-color);
   gap: var(--spacing-md);
-  justify-content: center;
-}
-
-@media (min-width: 768px) {
-  .chat-sidebar {
-    flex-direction: column;
-    border-bottom: none;
-    border-right: 1px solid var(--border-color);
-    justify-content: flex-start;
-  }
+  justify-content: flex-start;
+  border-right: 1px solid var(--border-color);
 }
 
 .contact-img {
-  width: 55px;
-  height: 55px;
+  width: 1.75rem;
+  height: 1.75rem;
   border-radius: 50%;
   object-fit: cover;
   object-position: top;
@@ -287,6 +237,7 @@
   border-radius: 8px;
   line-height: 1.4;
   word-wrap: break-word;
+  font-size: .75rem;
 }
 
 .system-msg {
@@ -359,5 +310,44 @@
   }
   40% { 
     transform: scale(1);
+  }
+}
+
+@media (min-width: 540px) {
+  .mobile-menu-btn, .close-menu-btn, .menu-overlay {
+    display: none;
+  }
+  
+  .app-header-settings {
+    position: static;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    flex-direction: row;
+    padding: 0;
+    box-shadow: none;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .main-nav {
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+  
+  .main-nav a {
+    font-size: 1rem;
+  }
+
+  .message {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .contact-img {
+    width: 3.5rem;
+    height: 3.5rem;
   }
 }
