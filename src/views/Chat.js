@@ -5,6 +5,7 @@ import { buildPayload, isValidPayload } from '#/engine/payload.js'
 // import { callAI } from '#/engine/aiClient.js'
 import { callAI } from '#/engine/mockApi.js'
 import { normalizeAIResponse } from '#/engine/normalizer.js'
+import { validateChatInput } from '#/utils/validators.js'
 
 const characterNames = {
   naruto: 'Naruto Uzumaki',
@@ -126,14 +127,12 @@ export const initChat = () => {
     if (!messageInput || !charCounter || !submitBtn) return
     
     const text = messageInput.value
-    const length = text.length
-    charCounter.textContent = `${length}/100`
+    const { status } = getState()
     
-    if (length === 0 || text.trim() === '' || getState().status === 'loading') {
-      submitBtn.disabled = true
-    } else {
-      submitBtn.disabled = false
-    }
+    const { isValid, counterText } = validateChatInput(text, status)
+    
+    charCounter.textContent = counterText
+    submitBtn.disabled = !isValid
   }
 
   if (messageInput) {
