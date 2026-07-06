@@ -2,7 +2,8 @@ import { getMessages, addMessage, getState, setState } from '#/store/chatStore.j
 import { charactersConfig } from '#/config/prompts.js'
 import { getTrimmedHistory } from '#/engine/history.js'
 import { buildPayload, isValidPayload } from '#/engine/payload.js'
-import { callAI } from '#/engine/aiClient.js'
+// import { callAI } from '#/engine/aiClient.js'
+import { callAI } from '#/engine/mockApi.js'
 import { normalizeAIResponse } from '#/engine/normalizer.js'
 
 const characterNames = {
