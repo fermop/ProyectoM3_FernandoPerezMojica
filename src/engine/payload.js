@@ -1,6 +1,6 @@
 export const buildPayload = (characterConfig, messages) => {
   return {
-    model: "gemini-2.5-flash",
+    model: "gemini-3.1-flash-lite",
     system: characterConfig.system,
     messages,
     max_tokens: characterConfig.max_tokens,

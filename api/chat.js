@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
     const messages = Array.isArray(payload?.messages) ? payload.messages : []
     const system = typeof payload?.system === "string" ? payload.system : ""
-    const modelName = typeof payload?.model === "string" ? payload.model : "gemini-2.5-flash"
+    const modelName = typeof payload?.model === "string" ? payload.model : "gemini-3.1-flash-lite"
     const temperature = typeof payload?.temperature === "number" ? payload.temperature : 0.7
     const maxOutputTokens = typeof payload?.max_tokens === "number" ? payload.max_tokens : 150
 
