@@ -1,10 +1,23 @@
 import { getMessages, addMessage, getState, setState } from '#/store/chatStore.js'
-import { sendMessageToAI } from '#/services/gemini.js'
+import { charactersConfig } from '#/config/prompts.js'
+import { getTrimmedHistory } from '#/engine/history.js'
+import { buildPayload, isValidPayload } from '#/engine/payload.js'
+import { callAI } from '#/engine/aiClient.js'
+import { normalizeAIResponse } from '#/engine/normalizer.js'
 
 const characterNames = {
   naruto: 'Naruto Uzumaki',
   kakashi: 'Kakashi Hatake',
   'rock-lee': 'Rock Lee'
+}
+
+const escapeHtml = (text) => {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
 }
 
 export const Chat = () => {
@@ -21,8 +34,7 @@ export const Chat = () => {
           <h3 id="current-chat-name">Seleccionando...</h3>
         </header>
         
-        <div class="chat-messages" id="chat-messages">
-        </div>
+        <div class="chat-messages" id="chat-messages"></div>
         
         <form id="chat-form" class="chat-input-area">
           <input type="text" id="message-input" placeholder="Escribe un mensaje..." autocomplete="off" required />
@@ -44,19 +56,15 @@ export const initChat = () => {
   const submitBtn = document.getElementById('submit-btn')
   const contactImgs = document.querySelectorAll('.contact-img')
 
-  if (chatNameEl) {
-    chatNameEl.textContent = characterNames[currentChar] || 'Shinobi'
-  }
+  if (chatNameEl) chatNameEl.textContent = characterNames[currentChar] || 'Shinobi'
 
   contactImgs.forEach(img => {
     img.classList.remove('active')
-    if (img.dataset.char === currentChar) {
-      img.classList.add('active')
-    }
+    if (img.dataset.char === currentChar) img.classList.add('active')
     
     img.addEventListener('click', () => {
       if (getState().status === 'loading') return 
-
+      
       const char = img.dataset.char
       if (char !== currentChar) {
         const a = document.createElement('a')
@@ -86,11 +94,12 @@ export const initChat = () => {
       return
     }
 
-    let html = messages.map(msg => `
-      <div class="message ${msg.sender === 'user' ? 'user-msg' : 'ai-msg'}">
-        <p>${msg.text}</p>
-      </div>
-    `).join('')
+    let html = messages.map(msg => {
+      const safeText = escapeHtml(msg.content)
+      
+      if (msg.role === 'system') return `<div class="message system-msg"><p>${safeText}</p></div>`
+      return `<div class="message ${msg.role === 'user' ? 'user-msg' : 'ai-msg'}"><p>${safeText}</p></div>`
+    }).join('')
 
     if (status === 'loading') {
       html += `
@@ -117,19 +126,24 @@ export const initChat = () => {
       const text = messageInput.value.trim()
       if (!text) return
 
-      const currentHistory = [...getMessages(currentChar)]
-
       addMessage(currentChar, text, 'user')
       setState({ status: 'loading', error: null })
-
+      
       messageInput.value = ''
       messageInput.disabled = true
       submitBtn.disabled = true
       renderMessages()
 
       try {
-        const reply = await sendMessageToAI(currentChar, text, currentHistory)
-        addMessage(currentChar, reply, 'ai')
+        const trimmedHistory = getTrimmedHistory(getMessages(currentChar), 10)
+        const payload = buildPayload(charactersConfig[currentChar], trimmedHistory)
+
+        if (!isValidPayload(payload)) throw new Error("Payload inválido")
+
+        const rawResponse = await callAI(payload)
+        const { text: aiText } = normalizeAIResponse(rawResponse)
+        
+        addMessage(currentChar, aiText, 'assistant')
       } catch (error) {
         console.error(error)
         addMessage(currentChar, 'Lo siento, surgió un problema en la red ninja. Intenta de nuevo.', 'system')

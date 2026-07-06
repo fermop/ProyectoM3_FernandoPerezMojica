@@ -1,0 +1,11 @@
+export const appendUserMessage = (messages, text) => {
+  return [...messages, { role: "user", content: text }]
+}
+
+export const appendAssistantMessage = (messages, text) => {
+  return [...messages, { role: "assistant", content: text }]
+}
+
+export const getTrimmedHistory = (messages, maxTurns = 10) => {
+  return messages.slice(-maxTurns)
+}
