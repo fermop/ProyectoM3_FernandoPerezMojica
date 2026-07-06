@@ -231,13 +231,29 @@
   gap: var(--spacing-sm);
 }
 
-.chat-input-area input {
+.input-wrapper {
+  display: flex;
   flex-grow: 1;
+  position: relative;
+  align-items: center;
+}
+
+.input-wrapper input {
+  width: 100%;
   padding: 0.5rem;
+  padding-right: 3.5rem;
   border: 1px solid var(--border-color);
   border-radius: 4px;
   background-color: var(--bg-color);
   color: var(--text-color);
+}
+
+.char-counter {
+  position: absolute;
+  right: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--accent-gray);
+  pointer-events: none;
 }
 
 /* --- Chat Messages --- */

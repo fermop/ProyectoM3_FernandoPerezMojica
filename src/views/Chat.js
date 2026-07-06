@@ -38,8 +38,11 @@ export const Chat = () => {
         <div class="chat-messages" id="chat-messages"></div>
         
         <form id="chat-form" class="chat-input-area">
-          <input type="text" id="message-input" placeholder="Escribe un mensaje..." autocomplete="off" required />
-          <button type="submit" id="submit-btn" class="btn-primary">Enviar</button>
+          <div class="input-wrapper">
+            <input type="text" id="message-input" placeholder="Escribe un mensaje..." autocomplete="off" required maxlength="100" />
+            <span id="char-counter" class="char-counter">0/100</span>
+          </div>
+          <button type="submit" id="submit-btn" class="btn-primary" disabled>Enviar</button>
         </form>
       </div>
     </section>
@@ -55,6 +58,7 @@ export const initChat = () => {
   const chatForm = document.getElementById('chat-form')
   const messageInput = document.getElementById('message-input')
   const submitBtn = document.getElementById('submit-btn')
+  const charCounter = document.getElementById('char-counter')
   const contactImgs = document.querySelectorAll('.contact-img')
 
   if (chatNameEl) chatNameEl.textContent = characterNames[currentChar] || 'Shinobi'
@@ -118,6 +122,25 @@ export const initChat = () => {
 
   renderMessages()
 
+  const updateInputState = () => {
+    if (!messageInput || !charCounter || !submitBtn) return
+    
+    const text = messageInput.value
+    const length = text.length
+    charCounter.textContent = `${length}/100`
+    
+    if (length === 0 || text.trim() === '' || getState().status === 'loading') {
+      submitBtn.disabled = true
+    } else {
+      submitBtn.disabled = false
+    }
+  }
+
+  if (messageInput) {
+    messageInput.addEventListener('input', updateInputState)
+    updateInputState()
+  }
+
   if (chatForm) {
     chatForm.addEventListener('submit', async (e) => {
       e.preventDefault()
@@ -131,8 +154,7 @@ export const initChat = () => {
       setState({ status: 'loading', error: null })
       
       messageInput.value = ''
-      messageInput.disabled = true
-      submitBtn.disabled = true
+      updateInputState()
       renderMessages()
 
       try {
@@ -151,8 +173,7 @@ export const initChat = () => {
         setState({ error: error.message })
       } finally {
         setState({ status: 'idle' })
-        messageInput.disabled = false
-        submitBtn.disabled = false
+        updateInputState()
         messageInput.focus()
         renderMessages()
       }
