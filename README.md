@@ -2,7 +2,9 @@
 
 SPA (Single Page Application) responsive que integra la API de Google Gemini para simular conversaciones con personajes del anime Naruto. Construida con Vanilla JavaScript, HTML semantico y CSS responsivo (Mobile-First), sin ningun framework de frontend.
 
-- URL del sitio desplegado: [https://proyecto-m3-fernando-perez-mojica.vercel.app/home](https://proyecto-m3-fernando-perez-mojica.vercel.app/home)
+🌐 URL del sitio desplegado: [https://proyecto-m3-fernando-perez-mojica.vercel.app/home](https://proyecto-m3-fernando-perez-mojica.vercel.app/home)
+
+![GIF demo](./public/assets/readme/sample.gif)
 
 ---
 
