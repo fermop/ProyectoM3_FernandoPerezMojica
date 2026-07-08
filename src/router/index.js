@@ -7,6 +7,10 @@ import { NotFound } from '#/views/NotFound.js'
 const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun-icon lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`
 const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon-icon lucide-moon"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>`
 
+const normalizePath = (path) => {
+  return path.length > 1 ? path.replace(/\/$/, '') : path
+}
+
 const routes = {
   '/home': Home,
   '/chat': Chat,
@@ -63,7 +67,7 @@ const initMobileMenu = () => {
 const renderView = (path) => {
   const app = document.getElementById('app')
   
-  const cleanPath = path.split('?')[0]
+  const cleanPath = normalizePath(path.split('?')[0])
   const view = routes[cleanPath] || routes['/404']
   
   app.innerHTML = `
@@ -92,15 +96,16 @@ const renderView = (path) => {
 }
 
 export const navigateTo = (path) => {
-  window.history.pushState({}, '', path)
-  renderView(path)
+  const normalizedPath = normalizePath(path)
+  window.history.pushState({}, '', normalizedPath)
+  renderView(normalizedPath)
 }
 
 export const initRouter = () => {
   initializeTheme()
 
   window.addEventListener('popstate', () => {
-    renderView(window.location.pathname + window.location.search)
+    renderView(normalizePath(window.location.pathname) + window.location.search)
   })
 
   document.body.addEventListener('click', e => {
@@ -120,11 +125,15 @@ export const initRouter = () => {
     }
   })
 
-  const currentPath = window.location.pathname + window.location.search
-  if (window.location.pathname === '/') {
+  const normalizedPathname = normalizePath(window.location.pathname)
+  const currentPath = normalizedPathname + window.location.search
+  if (normalizedPathname === '/') {
     window.history.replaceState({}, '', '/home')
     renderView('/home')
   } else {
+    if (normalizedPathname !== window.location.pathname) {
+      window.history.replaceState({}, '', currentPath)
+    }
     renderView(currentPath)
   }
 }
